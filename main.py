@@ -26,6 +26,7 @@ MAX_FPS = 60
 window = pygame.Window("Tower Defence", WIN_SIZE)
 
 surface = window.get_surface()
+surface_rect = surface.get_frect()
 
 clock = pygame.Clock()
 
@@ -75,18 +76,20 @@ while running:
 
     for bullet in bullets:
         bullet.update()
+        if not bullet.rect.colliderect(surface_rect):
+            bullets.remove(bullet)
     for enemy in enemies:
         enemy.update()
 
     for bullet in bullets:
         for enemy in enemies:
-            if bullet.rect.coliderect(enemy.rect):
+            if bullet.rect.colliderect(enemy.rect):
                 score += 1
                 bullets.remove(bullet)
                 enemies.remove(enemy)
                 break
     for enemy in enemies:
-        if player.rect.coliderect(enemy.rect):
+        if player.rect.colliderect(enemy.rect):
             score = 0
             enemies.clear()
             bullets.clear()
